@@ -39,14 +39,15 @@ module neuron_proc #(
   end
 
   always_ff @(posedge clk or posedge rst) begin
-    accum_r <= accum_r + next_accum;
-    if (rst) accum_r <= 0;  // TODO implicit bit change
-
-    xnor_res_r <= xnor_res;
-    if (rst) xnor_res_r <= 0;  // TODO implicit bit change
-
-    popcount_res_r <= xnors_popcount;
-    if (rst) popcount_res_r <= 0;  // TODO implicit bit change
+    if (rst) begin
+      accum_r <= 0;
+      xnor_res_r <= 0;
+      popcount_res_r <= 0;
+    end else begin
+      accum_r <= accum_r + next_accum;
+      xnor_res_r <= xnor_res;
+      popcount_res_r <= xnors_popcount;  // now updates correctly
+    end
   end
 
   delay #(

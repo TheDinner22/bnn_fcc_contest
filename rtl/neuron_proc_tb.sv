@@ -46,16 +46,17 @@ module neuron_proc_tb;
     // wait until rising edge when valid_out is 1
     @(posedge clk);
     while (!valid_out) begin
-      @(posedge clk);
+      @(negedge clk);
     end
 
-    assert (y < 1'b1)
-    else $fatal("y was incorrect!");
+    assert (y == 1'b1)
+    else $fatal("y was incorrect! y = %b", y);
 
-    assert (popcount == 2)
-    else $fatal("y was incorrect!");
+    assert (popcount == 6)
+    else $fatal("popcount was incorrect! popcount = %0d", popcount);
 
 
     $display("TB ended");
+    $finish;
   end
 endmodule
