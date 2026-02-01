@@ -40,8 +40,21 @@ module neuron_proc_tb;
 
     valid_in <= 1'b1;
     inputs <= 8'b11110000;
-    weights <= 8'b00110000;
+    weights <= 8'b11111111;
     threshhold <= 1;
+
+    @(posedge clk);
+
+    valid_in <= 1'b1;
+    inputs <= 8'b11111111;
+    weights <= 8'b11111111;
+    threshhold <= 1;
+    last <= 1;
+
+    @(posedge clk);
+
+    last <= 0;
+    valid_in <= 0;
 
     // wait until rising edge when valid_out is 1
     @(posedge clk);
@@ -52,7 +65,7 @@ module neuron_proc_tb;
     assert (y == 1'b1)
     else $fatal("y was incorrect! y = %b", y);
 
-    assert (popcount == 6)
+    assert (popcount == 12)
     else $fatal("popcount was incorrect! popcount = %0d", popcount);
 
 
